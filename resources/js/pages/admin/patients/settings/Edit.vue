@@ -24,6 +24,7 @@ import { Slider } from '@/components/ui/slider';
 import { Spinner } from '@/components/ui/spinner';
 import { Switch } from '@/components/ui/switch';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { getMinutes } from '@/lib/get-minutes';
 import { index as patientsIndex } from '@/routes/admin/patients';
 import {
     edit as settings,
@@ -31,7 +32,6 @@ import {
 } from '@/routes/admin/patients/settings';
 import type { BreadcrumbItem } from '@/types';
 import type { Patient } from '@/types/data/patient';
-import { getMinutes } from '@/lib/get-minutes';
 
 interface Props {
     patient: Patient;

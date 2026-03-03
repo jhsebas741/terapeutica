@@ -24,14 +24,15 @@ class DatabaseSeeder extends Seeder
             'password' => '12345678',
         ])->assignRole('admin');
 
-        User::create([
+        $patient = User::create([
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => '12345678',
             'birth_date' => '2000-01-01',
             'diagnosis' => 'Test Diagnosis',
         ])->assignRole('paciente');
-
+        
+        $patient->patientSetting()->create();
         
     }
 }
