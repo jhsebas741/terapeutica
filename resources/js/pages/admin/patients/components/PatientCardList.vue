@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/card';
 import { getAge } from '@/lib/get-age';
 import { edit as patientsEdit, toggleActive } from '@/routes/admin/patients';
+import { edit as settings } from '@/routes/admin/patients/settings';
 import type { Patient } from '@/types/data/patient';
 
 interface Props {
@@ -25,7 +26,7 @@ defineProps<Props>();
 
 <template>
     <div
-        class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
+        class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
     >
         <Card v-for="patient in patients" :key="patient.id">
             <CardHeader>
@@ -68,6 +69,11 @@ defineProps<Props>();
                 <Button variant="outline" as-child>
                     <Link :href="toggleActive(patient).url" method="patch">
                         {{ patient.is_active ? 'Desactivar' : 'Activar' }}
+                    </Link>
+                </Button>
+                <Button variant="outline" class="sm:col-span-2" as-child>
+                    <Link :href="settings(patient).url">
+                        Configuración Sensorial
                     </Link>
                 </Button>
             </CardFooter>

@@ -1,3 +1,5 @@
+import type { PatientSetting } from './patient-settings';
+
 export interface Patient {
     id: number;
     name: string;
@@ -6,4 +8,5 @@ export interface Patient {
     diagnosis: string;
     avatar_url: string;
     is_active: boolean;
+    patient_setting?: PatientSetting;
 }
