@@ -21,6 +21,12 @@ declare module '@inertiajs/core' {
             sidebarOpen: boolean;
             [key: string]: unknown;
         };
+        flashDataType: {
+            toast?: {
+                type: 'success' | 'error' | 'warning' | 'info';
+                message: string;
+            };
+        };
     }
 }
 
