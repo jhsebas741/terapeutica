@@ -12,7 +12,7 @@ class PatientSettingController extends Controller
     public function edit(User $patient)
     {
         $patient->load('patientSetting');
-        
+
         return Inertia::render('admin/patients/settings/Edit', [
             'patient' => $patient,
         ]);
@@ -24,7 +24,6 @@ class PatientSettingController extends Controller
             'tts_enabled' => ['required', 'boolean'],
             'smooth_animations' => ['required', 'boolean'],
             'stimulation_level' => ['required', 'in:low,medium,high'],
-            'default_routine_time_sec' => ['required', 'integer', 'min:10'],
         ]);
 
         $patient->patientSetting()->update($validated);

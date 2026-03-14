@@ -11,6 +11,7 @@ class PatientSetting extends Model
     use HasFactory;
 
     protected $primaryKey = 'user_id';
+
     public $incrementing = false;
 
     protected $fillable = [
@@ -18,7 +19,6 @@ class PatientSetting extends Model
         'tts_enabled',
         'smooth_animations',
         'stimulation_level',
-        'default_routine_time_sec',
     ];
 
     protected function casts(): array
@@ -26,7 +26,6 @@ class PatientSetting extends Model
         return [
             'tts_enabled' => 'boolean',
             'smooth_animations' => 'boolean',
-            'default_routine_time_sec' => 'integer',
         ];
     }
 

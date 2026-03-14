@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pictogram extends Model
@@ -17,6 +16,7 @@ class Pictogram extends Model
         'name',
         'description',
         'image_url',
+        'icon_text',
         'audio_url',
         'difficulty_level',
         'is_active',

@@ -14,7 +14,6 @@ class RoutineStep extends Model
         'routine_id',
         'pictogram_id',
         'order',
-        'estimated_time_sec',
     ];
 
     public function routine()

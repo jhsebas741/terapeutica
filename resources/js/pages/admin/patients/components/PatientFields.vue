@@ -14,7 +14,9 @@ defineProps<Props>();
 
 <template>
     <Field :data-invalid="!!errors.name">
-        <FieldLabel for="name"> Nombre </FieldLabel>
+        <FieldLabel for="name">
+            Nombre <span class="text-destructive">*</span></FieldLabel
+        >
         <Input
             id="name"
             name="name"
@@ -26,7 +28,9 @@ defineProps<Props>();
         <FieldError :errors="errors.name" />
     </Field>
     <Field :data-invalid="!!errors.birth_date">
-        <FieldLabel for="birth_date"> Fecha de Nacimiento </FieldLabel>
+        <FieldLabel for="birth_date">
+            Fecha de Nacimiento <span class="text-destructive">*</span>
+        </FieldLabel>
         <Input
             id="birth_date"
             name="birth_date"
@@ -53,7 +57,9 @@ defineProps<Props>();
         <FieldError :errors="errors.diagnosis" />
     </Field>
     <Field :data-invalid="!!errors.email">
-        <FieldLabel for="email"> Email </FieldLabel>
+        <FieldLabel for="email">
+            Email <span class="text-destructive">*</span></FieldLabel
+        >
         <Input
             id="email"
             name="email"

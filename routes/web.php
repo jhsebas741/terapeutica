@@ -1,17 +1,16 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\PatientSettingController;
+use App\Http\Controllers\Admin\PictogramController;
+use App\Http\Controllers\Admin\RoutineController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
-use App\Http\Controllers\SetupController;
 
 Route::inertia('/', 'Welcome', [
     'canRegister' => Features::enabled(Features::registration()),
 ])->name('home');
-
-Route::get('/setup', [SetupController::class, 'index'])->name('setup.index');
-Route::post('/setup', [SetupController::class, 'store'])->name('setup.store');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
@@ -25,10 +24,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Patients
         Route::patch('patients/{patient}/toggle-active', [PatientController::class, 'toggleActive'])->name('admin.patients.toggle-active');
         Route::resource('patients', PatientController::class)->except(['show', 'destroy'])->names('admin.patients');
-        
+
         // Patient Settings
         Route::get('patients/{patient}/settings', [PatientSettingController::class, 'edit'])->name('admin.patients.settings.edit');
         Route::put('patients/{patient}/settings', [PatientSettingController::class, 'update'])->name('admin.patients.settings.update');
+
+        // Catalog
+        Route::resource('categories', CategoryController::class)->except(['show'])->names('admin.categories');
+        Route::resource('pictograms', PictogramController::class)->except(['show'])->names('admin.pictograms');
+
+        // Routines
+        Route::resource('routines', RoutineController::class)->except(['show'])->names('admin.routines');
     });
 
     // Patient Routes

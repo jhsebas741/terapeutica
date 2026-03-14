@@ -20,11 +20,9 @@ import {
     FieldTitle,
 } from '@/components/ui/field';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Slider } from '@/components/ui/slider';
 import { Spinner } from '@/components/ui/spinner';
 import { Switch } from '@/components/ui/switch';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { getMinutes } from '@/lib/get-minutes';
 import { index as patientsIndex } from '@/routes/admin/patients';
 import {
     edit as settings,
@@ -73,7 +71,6 @@ const form = useForm({
     tts_enabled: patient.patient_setting?.tts_enabled ?? false,
     smooth_animations: patient.patient_setting?.smooth_animations ?? false,
     stimulation_level: patient.patient_setting?.stimulation_level ?? 'medium',
-    default_routine_time_sec: patient.patient_setting?.default_routine_time_sec ?? 60,
 });
 
 function submit() {
@@ -165,22 +162,7 @@ function submit() {
                             </RadioGroup>
                             <FieldError :errors="form.errors.stimulation_level" />
                         </FieldSet>
-                        <Field>
-                            <FieldLabel for="default_routine_time_sec">
-                                Tiempo por defecto de la rutina ({{ getMinutes(form.default_routine_time_sec) }})
-                            </FieldLabel>
-                            <Slider
-                                id="default_routine_time_sec"
-                                name="default_routine_time_sec"
-                                :aria-invalid="!!form.errors.default_routine_time_sec"
-                                :model-value="[form.default_routine_time_sec]"
-                                :min="10"
-                                :max="60 * 5"
-                                :step="10"
-                                @update:model-value="form.default_routine_time_sec = $event?.[0] ?? 0"
-                            />
-                            <FieldError :errors="form.errors.default_routine_time_sec" />
-                        </Field>
+
                     </CardContent>
                     <CardFooter
                         class="flex flex-col gap-4 sm:flex-row sm:justify-between"

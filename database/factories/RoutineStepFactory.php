@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Pictogram;
+use App\Models\Routine;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,15 +11,12 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class RoutineStepFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            //
+            'routine_id' => Routine::factory(),
+            'pictogram_id' => Pictogram::factory(),
+            'order' => fake()->numberBetween(1, 10),
         ];
     }
 }
