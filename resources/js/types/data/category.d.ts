@@ -1,3 +1,5 @@
+import type { Pictogram } from './pictogram';
+
 export interface Category {
     id: number;
     name: string;
@@ -5,4 +7,5 @@ export interface Category {
     icon_emoji: string | null;
     color_hex: string;
     pictograms_count?: number;
+    pictograms?: Pictogram[];
 }

@@ -2,6 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 import {
     ClipboardListIcon,
+    Gamepad2Icon,
     ImageIcon,
     LayoutGrid,
     TagsIcon,
@@ -24,6 +25,7 @@ import { index as categoriesIndex } from '@/routes/admin/categories';
 import { index as patientsIndex } from '@/routes/admin/patients';
 import { index as pictogramsIndex } from '@/routes/admin/pictograms';
 import { index as routinesIndex } from '@/routes/admin/routines';
+import { index as gamesIndex } from '@/routes/admin/games';
 import type { NavItem } from '@/types';
 import AppLogo from './AppLogo.vue';
 
@@ -52,6 +54,11 @@ const mainNavItems: NavItem[] = [
         title: 'Rutinas',
         href: routinesIndex(),
         icon: ClipboardListIcon,
+    },
+    {
+        title: 'Juegos',
+        href: gamesIndex(),
+        icon: Gamepad2Icon,
     },
 ];
 

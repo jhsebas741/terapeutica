@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head, Link, router } from '@inertiajs/vue3';
-import { ArchiveIcon, EditIcon, PlusIcon } from 'lucide-vue-next';
+import { EditIcon, PlusIcon, Trash2Icon } from 'lucide-vue-next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -255,8 +255,8 @@ const totalPictograms = (groups: PictogramGroup[]): number =>
                                     variant="outline"
                                     @click="archivePictogram(pictogram)"
                                 >
-                                    <ArchiveIcon class="h-4 w-4" />
-                                    Archivar
+                                    <Trash2Icon class="h-4 w-4" />
+                                    Eliminar
                                 </Button>
                             </CardFooter>
                         </Card>

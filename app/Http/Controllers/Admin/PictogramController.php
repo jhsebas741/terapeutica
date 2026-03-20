@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PictogramRequest;
 use App\Models\Category;
 use App\Models\Pictogram;
+use App\Models\RoutineStep;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -142,11 +143,20 @@ class PictogramController extends Controller
 
     public function destroy(Pictogram $pictogram)
     {
+        if (RoutineStep::where('pictogram_id', $pictogram->id)->exists()) {
+            Inertia::flash('toast', [
+                'type' => 'error',
+                'message' => 'No se puede eliminar el pictograma porque está siendo usado en una o más rutinas',
+            ]);
+
+            return redirect()->route('admin.pictograms.index');
+        }
+
         $pictogram->delete();
 
         Inertia::flash('toast', [
             'type' => 'success',
-            'message' => 'Pictograma archivado exitosamente',
+            'message' => 'Pictograma eliminado exitosamente',
         ]);
 
         return redirect()->route('admin.pictograms.index');

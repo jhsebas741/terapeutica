@@ -17,7 +17,10 @@ class GameElementFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'game_id' => \App\Models\Game::factory(),
+            'pictogram_id' => \App\Models\Pictogram::factory(),
+            'situation_text' => null,
+            'sequence_order' => null,
         ];
     }
 }

@@ -36,7 +36,7 @@ export function useQueryParams<T extends Record<string, any>>(
 
         Object.keys(params).forEach((key) => {
             const value = (params as any)[key];
-            if (value !== '' && value !== null && value !== undefined) {
+            if (value !== '' && value !== null && value !== undefined && value !== 'all') {
                 if (key === 'sort') {
                     query.sort = value;
                 } else if (key === 'page') {
