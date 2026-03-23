@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { CogIcon, EyeIcon, EyeOffIcon, PenLineIcon } from 'lucide-vue-next';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -32,11 +33,9 @@ defineProps<Props>();
             <CardHeader>
                 <div class="flex items-center gap-4">
                     <Avatar>
-                        <AvatarImage
-                            src="https://github.com/evilrabbit.png"
-                            alt="@evilrabbit"
-                        />
-                        <AvatarFallback>ER</AvatarFallback>
+                        <AvatarFallback>{{
+                            patient.name.substring(0, 2).toUpperCase()
+                        }}</AvatarFallback>
                     </Avatar>
                     <div>
                         <CardTitle class="text-2xl">{{
@@ -64,15 +63,20 @@ defineProps<Props>();
             </CardContent>
             <CardFooter class="grid grid-cols-1 gap-2 sm:grid-cols-2">
                 <Button as-child variant="outline">
-                    <Link :href="patientsEdit(patient).url"> Editar </Link>
+                    <Link :href="patientsEdit(patient).url"
+                        ><PenLineIcon /> Editar
+                    </Link>
                 </Button>
                 <Button variant="outline" as-child>
                     <Link :href="toggleActive(patient).url" method="patch">
+                        <EyeOffIcon v-if="patient.is_active" />
+                        <EyeIcon v-else />
                         {{ patient.is_active ? 'Desactivar' : 'Activar' }}
                     </Link>
                 </Button>
                 <Button variant="outline" class="sm:col-span-2" as-child>
                     <Link :href="settings(patient).url">
+                        <CogIcon />
                         Configuración Sensorial
                     </Link>
                 </Button>

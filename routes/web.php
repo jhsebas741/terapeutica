@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GameController;
 use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\PatientSettingController;
@@ -22,7 +23,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Admin Routes
     Route::middleware(['role:admin'])->prefix('admin')->group(function () {
-        Route::inertia('/', 'admin/Dashboard')->name('admin.dashboard');
+        Route::get('/', DashboardController::class)->name('admin.dashboard');
 
         // Patients
         Route::patch('patients/{patient}/toggle-active', [PatientController::class, 'toggleActive'])->name('admin.patients.toggle-active');
@@ -54,6 +55,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Games
         Route::get('games', [ChildGameController::class, 'index'])->name('patient.games.index');
+        Route::get('games/quick/{type}', [ChildGameController::class, 'quickPlay'])->name('patient.games.quick');
         Route::get('games/{game}', [ChildGameController::class, 'show'])->name('patient.games.show');
         Route::post('games/{game}/complete', [ChildGameController::class, 'complete'])->name('patient.games.complete');
     });

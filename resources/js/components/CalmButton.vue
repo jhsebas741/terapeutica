@@ -1,22 +1,36 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onUnmounted } from 'vue';
 
 const isOpen = ref(false);
 const phase = ref<'inhale' | 'hold' | 'exhale'>('inhale');
 
 let animationTimeout: ReturnType<typeof setTimeout>;
 
+const speak = (text: string) => {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'es-ES';
+        utterance.rate = 0.85;
+        window.speechSynthesis.speak(utterance);
+    }
+};
+
 const startBreathing = () => {
     isOpen.value = true;
+    speak('Momento de calma');
     runCycle();
 };
 
 const runCycle = () => {
     phase.value = 'inhale';
+    speak('Inhala');
     animationTimeout = setTimeout(() => {
         phase.value = 'hold';
+        speak('Mantén');
         animationTimeout = setTimeout(() => {
             phase.value = 'exhale';
+            speak('Exhala');
             animationTimeout = setTimeout(() => {
                 if (isOpen.value) {
                     runCycle();
@@ -29,7 +43,13 @@ const runCycle = () => {
 const close = () => {
     isOpen.value = false;
     clearTimeout(animationTimeout);
+    window.speechSynthesis?.cancel();
 };
+
+onUnmounted(() => {
+    clearTimeout(animationTimeout);
+    window.speechSynthesis?.cancel();
+});
 
 const phaseLabel = () => {
     switch (phase.value) {

@@ -154,7 +154,9 @@ const getTypeConfig = (type: string) => {
                                     })
                                 "
                             >
-                                <ArrowRightLeftIcon class="mr-2 h-4 w-4 text-blue-500" />
+                                <ArrowRightLeftIcon
+                                    class="mr-2 h-4 w-4 text-blue-500"
+                                />
                                 Juego de Emparejar
                             </Link>
                         </DropdownMenuItem>
@@ -166,7 +168,9 @@ const getTypeConfig = (type: string) => {
                                     })
                                 "
                             >
-                                <ListOrderedIcon class="mr-2 h-4 w-4 text-amber-500" />
+                                <ListOrderedIcon
+                                    class="mr-2 h-4 w-4 text-amber-500"
+                                />
                                 Secuencia Lógica
                             </Link>
                         </DropdownMenuItem>
@@ -287,9 +291,7 @@ const getTypeConfig = (type: string) => {
                                             "
                                         >
                                             <ArrowRightLeftIcon
-                                                v-if="
-                                                    game.type === 'emparejar'
-                                                "
+                                                v-if="game.type === 'emparejar'"
                                                 class="h-4 w-4"
                                             />
                                             <ListOrderedIcon
@@ -298,17 +300,12 @@ const getTypeConfig = (type: string) => {
                                                 "
                                                 class="h-4 w-4"
                                             />
-                                            <HeartIcon
-                                                v-else
-                                                class="h-4 w-4"
-                                            />
+                                            <HeartIcon v-else class="h-4 w-4" />
                                         </div>
                                         <div class="min-w-0">
                                             <CardTitle
                                                 class="line-clamp-1 text-base"
-                                                >{{
-                                                    game.name
-                                                }}</CardTitle
+                                                >{{ game.name }}</CardTitle
                                             >
                                             <p
                                                 class="text-xs text-muted-foreground"
@@ -321,11 +318,8 @@ const getTypeConfig = (type: string) => {
                                         </div>
                                     </div>
                                     <div class="flex shrink-0 gap-1.5">
-                                        <Badge
-                                            variant="outline"
-                                            class="text-xs"
-                                            >Nv.
-                                            {{ game.level }}</Badge
+                                        <Badge variant="outline" class="text-xs"
+                                            >Nv. {{ game.level }}</Badge
                                         >
                                         <Badge
                                             class="border text-xs"
@@ -360,27 +354,19 @@ const getTypeConfig = (type: string) => {
                                         >
                                             <img
                                                 v-if="
-                                                    element.pictogram
-                                                        ?.image_url
+                                                    element.pictogram?.image_url
                                                 "
                                                 :src="`/storage/${element.pictogram.image_url}`"
                                                 :alt="element.pictogram?.name"
                                                 class="h-full w-full object-cover"
                                             />
-                                            <span
-                                                v-else
-                                                class="text-lg"
-                                                >{{
-                                                    element.pictogram
-                                                        ?.icon_text
-                                                }}</span
-                                            >
+                                            <span v-else class="text-lg">{{
+                                                element.pictogram?.icon_text
+                                            }}</span>
                                         </div>
                                         <span
                                             class="max-w-[60px] truncate text-[10px] text-muted-foreground"
-                                            >{{
-                                                element.pictogram?.name
-                                            }}</span
+                                            >{{ element.pictogram?.name }}</span
                                         >
                                     </div>
                                 </div>
@@ -394,8 +380,9 @@ const getTypeConfig = (type: string) => {
                                     class="space-y-1.5"
                                 >
                                     <div
-                                        v-for="(element, idx) in game
-                                            .game_elements"
+                                        v-for="(
+                                            element, idx
+                                        ) in game.game_elements"
                                         :key="element.id"
                                         class="flex items-center gap-2 rounded-md bg-amber-50/50 px-2 py-1.5 dark:bg-amber-950/20"
                                     >
@@ -408,27 +395,19 @@ const getTypeConfig = (type: string) => {
                                         >
                                             <img
                                                 v-if="
-                                                    element.pictogram
-                                                        ?.image_url
+                                                    element.pictogram?.image_url
                                                 "
                                                 :src="`/storage/${element.pictogram.image_url}`"
                                                 :alt="element.pictogram?.name"
                                                 class="h-full w-full object-cover"
                                             />
-                                            <span
-                                                v-else
-                                                class="text-sm"
-                                                >{{
-                                                    element.pictogram
-                                                        ?.icon_text
-                                                }}</span
-                                            >
+                                            <span v-else class="text-sm">{{
+                                                element.pictogram?.icon_text
+                                            }}</span>
                                         </div>
                                         <span
                                             class="truncate text-xs font-medium"
-                                            >{{
-                                                element.pictogram?.name
-                                            }}</span
+                                            >{{ element.pictogram?.name }}</span
                                         >
                                     </div>
                                 </div>
@@ -465,7 +444,7 @@ const getTypeConfig = (type: string) => {
                                                 class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border shadow-sm"
                                                 :class="
                                                     idx === 0
-                                                        ? 'border-green-500 ring-2 ring-green-500/30 bg-green-50 dark:bg-green-950/30'
+                                                        ? 'border-green-500 bg-green-50 ring-2 ring-green-500/30 dark:bg-green-950/30'
                                                         : 'bg-muted/30'
                                                 "
                                             >
@@ -480,14 +459,9 @@ const getTypeConfig = (type: string) => {
                                                     "
                                                     class="h-full w-full object-cover"
                                                 />
-                                                <span
-                                                    v-else
-                                                    class="text-sm"
-                                                    >{{
-                                                        element.pictogram
-                                                            ?.icon_text
-                                                    }}</span
-                                                >
+                                                <span v-else class="text-sm">{{
+                                                    element.pictogram?.icon_text
+                                                }}</span>
                                             </div>
                                             <span
                                                 class="max-w-[50px] truncate text-[10px]"
@@ -516,9 +490,7 @@ const getTypeConfig = (type: string) => {
                                 </div>
                             </CardContent>
 
-                            <CardFooter
-                                class="flex justify-end gap-2 border-t bg-muted/20 pt-4 pb-4"
-                            >
+                            <CardFooter class="flex justify-end gap-2">
                                 <Button size="sm" variant="outline" as-child>
                                     <Link :href="edit(game)">
                                         <EditIcon class="h-4 w-4" />

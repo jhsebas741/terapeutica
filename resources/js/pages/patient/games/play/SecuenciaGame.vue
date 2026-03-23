@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { router } from '@inertiajs/vue3';
+import { Volume2Icon } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import type { Game, GameElement } from '@/types/data/game';
 
@@ -14,6 +15,16 @@ const attempts = ref(0);
 const selectedOrder = ref<GameElement[]>([]);
 const wrongIndex = ref<number | null>(null);
 const isCompleted = ref(false);
+
+const speak = (text: string) => {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'es-ES';
+        utterance.rate = 0.9;
+        window.speechSynthesis.speak(utterance);
+    }
+};
 
 const correctOrder = computed(() =>
     [...(game.game_elements ?? [])].sort(
@@ -42,12 +53,14 @@ const selectElement = (element: GameElement) => {
     if (element.pictogram_id === expectedElement.pictogram_id) {
         selectedOrder.value.push(element);
         wrongIndex.value = null;
+        speak(`¡Correcto! ${element.pictogram?.name ?? ''}`);
 
         if (selectedOrder.value.length === correctOrder.value.length) {
             completeGame();
         }
     } else {
         wrongIndex.value = element.pictogram_id;
+        speak('Intenta de nuevo');
         setTimeout(() => {
             wrongIndex.value = null;
         }, 600);
@@ -56,6 +69,7 @@ const selectElement = (element: GameElement) => {
 
 const completeGame = () => {
     isCompleted.value = true;
+    speak('¡Felicidades! ¡Secuencia completada!');
     const timeSpent = Math.round((Date.now() - startTime) / 1000);
     const totalElements = correctOrder.value.length;
     const score = Math.max(0, 100 - (attempts.value - totalElements) * 10);
@@ -157,6 +171,13 @@ const goBack = () => {
                         <span class="text-center text-sm font-bold text-slate-700 dark:text-slate-200">
                             {{ element.pictogram?.name }}
                         </span>
+                        <button
+                            @click.stop="speak(element.pictogram?.name ?? '')"
+                            class="mt-1 text-amber-500 hover:text-amber-600"
+                            title="Escuchar"
+                        >
+                            <Volume2Icon class="h-3 w-3" />
+                        </button>
                     </button>
                 </div>
             </div>

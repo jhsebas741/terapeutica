@@ -17,22 +17,27 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
         ]);
-        
+
         User::create([
             'name' => 'Admin User',
             'email' => 'admin@example.com',
             'password' => '12345678',
         ])->assignRole('admin');
 
-        $patient = User::create([
+        User::create([
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => '12345678',
             'birth_date' => '2000-01-01',
             'diagnosis' => 'Test Diagnosis',
-        ])->assignRole('paciente');
-        
-        $patient->patientSetting()->create();
-        
+        ])->assignRole('paciente')->patientSetting()->create();
+
+        $this->call([
+            CategorySeeder::class,
+            PictogramSeeder::class,
+            RoutineSeeder::class,
+            GameSeeder::class,
+        ]);
+
     }
 }

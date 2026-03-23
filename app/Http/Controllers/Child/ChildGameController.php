@@ -10,7 +10,7 @@ use Inertia\Inertia;
 
 class ChildGameController extends Controller
 {
-    public function index(): \Inertia\Response
+    public function index()
     {
         $games = Game::query()
             ->where('is_active', true)
@@ -24,7 +24,27 @@ class ChildGameController extends Controller
         ]);
     }
 
-    public function show(Game $game): \Inertia\Response
+    public function quickPlay(string $type)
+    {
+        $game = Game::query()
+            ->where('is_active', true)
+            ->where('type', $type)
+            ->inRandomOrder()
+            ->first();
+
+        if (! $game) {
+            Inertia::flash('toast', [
+                'type' => 'warning',
+                'message' => 'No hay juegos disponibles de este tipo.',
+            ]);
+
+            return redirect()->route('patient.games.index');
+        }
+
+        return redirect()->route('patient.games.show', $game);
+    }
+
+    public function show(Game $game)
     {
         abort_unless($game->is_active, 404);
 
@@ -35,7 +55,7 @@ class ChildGameController extends Controller
         ]);
     }
 
-    public function complete(Request $request, Game $game): \Illuminate\Http\RedirectResponse
+    public function complete(Request $request, Game $game)
     {
         $validated = $request->validate([
             'result' => ['required', 'in:completado,incompleto,excelente'],
@@ -60,6 +80,6 @@ class ChildGameController extends Controller
             'message' => '¡Juego completado! 🎮',
         ]);
 
-        return redirect()->route('patient.games.index');
+        // return redirect()->route('patient.games.index');
     }
 }

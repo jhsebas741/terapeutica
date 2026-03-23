@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { router } from '@inertiajs/vue3';
-import { computed, ref } from 'vue';
+import { Volume2Icon } from 'lucide-vue-next';
+import { computed, onMounted, ref } from 'vue';
 import type { Game, GameElement } from '@/types/data/game';
 
 interface Props {
@@ -14,6 +15,22 @@ const attempts = ref(0);
 const selectedId = ref<number | null>(null);
 const isCorrect = ref<boolean | null>(null);
 const isCompleted = ref(false);
+
+const speak = (text: string) => {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'es-ES';
+        utterance.rate = 0.9;
+        window.speechSynthesis.speak(utterance);
+    }
+};
+
+onMounted(() => {
+    if (game.description) {
+        speak(`Situación: ${game.description}`);
+    }
+});
 
 const elements = computed(() => game.game_elements ?? []);
 
@@ -32,14 +49,17 @@ const selectEmotion = (element: GameElement) => {
 
     attempts.value++;
     selectedId.value = element.pictogram_id;
+    speak(element.pictogram?.name ?? '');
 
     if (element.pictogram_id === correctElement.value?.pictogram_id) {
         isCorrect.value = true;
+        setTimeout(() => speak('¡Correcto!'), 500);
         setTimeout(() => {
             completeGame();
         }, 1200);
     } else {
         isCorrect.value = false;
+        setTimeout(() => speak('Intenta de nuevo'), 500);
         setTimeout(() => {
             selectedId.value = null;
             isCorrect.value = null;
@@ -49,6 +69,7 @@ const selectEmotion = (element: GameElement) => {
 
 const completeGame = () => {
     isCompleted.value = true;
+    speak('¡Felicidades! ¡Emoción correcta!');
     const timeSpent = Math.round((Date.now() - startTime) / 1000);
     const score = attempts.value === 1 ? 100 : Math.max(0, 100 - (attempts.value - 1) * 25);
 
@@ -91,9 +112,18 @@ const goBack = () => {
         <div v-else class="rounded-3xl bg-white p-4 shadow-lg sm:p-8 dark:bg-slate-800">
             <!-- Situation text -->
             <div class="mb-6 rounded-2xl bg-rose-50 p-6 text-center dark:bg-rose-950/20">
-                <p class="mb-1 text-sm font-semibold text-rose-500 dark:text-rose-400">
-                    Situación:
-                </p>
+                <div class="mb-1 flex items-center justify-center gap-2">
+                    <p class="text-sm font-semibold text-rose-500 dark:text-rose-400">
+                        Situación:
+                    </p>
+                    <button
+                        @click="speak(`Situación: ${game.description}`)"
+                        class="text-rose-400 hover:text-rose-600"
+                        title="Escuchar situación"
+                    >
+                        <Volume2Icon class="h-4 w-4" />
+                    </button>
+                </div>
                 <p class="text-xl font-bold text-slate-800 sm:text-2xl dark:text-slate-100">
                     {{ game.description }}
                 </p>
@@ -131,9 +161,18 @@ const goBack = () => {
                             element.pictogram?.icon_text
                         }}</span>
                     </div>
-                    <span class="text-center text-base font-bold text-slate-700 sm:text-lg dark:text-slate-200">
-                        {{ element.pictogram?.name }}
-                    </span>
+                    <div class="flex items-center gap-1">
+                        <span class="text-center text-base font-bold text-slate-700 sm:text-lg dark:text-slate-200">
+                            {{ element.pictogram?.name }}
+                        </span>
+                        <button
+                            @click.stop="speak(element.pictogram?.name ?? '')"
+                            class="text-rose-400 hover:text-rose-600"
+                            title="Escuchar"
+                        >
+                            <Volume2Icon class="h-3 w-3" />
+                        </button>
+                    </div>
                 </button>
             </div>
         </div>

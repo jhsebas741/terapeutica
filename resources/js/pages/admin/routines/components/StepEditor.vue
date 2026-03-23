@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { GripVerticalIcon, PlusIcon, Trash2Icon } from 'lucide-vue-next';
-import { ref, computed, toRef } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useDraggable } from 'vue-draggable-plus';
 import { Button } from '@/components/ui/button';
 import {
@@ -30,14 +30,21 @@ const emit = defineEmits<{
 }>();
 
 const listRef = ref<HTMLElement | null>(null);
-const stepsRef = toRef(props, 'modelValue');
+const localSteps = ref<RoutineStep[]>([...props.modelValue]);
 
-useDraggable(listRef, stepsRef, {
+watch(
+    () => props.modelValue,
+    (newVal) => {
+        localSteps.value = [...newVal];
+    },
+);
+
+useDraggable(listRef, localSteps, {
     handle: '.drag-handle',
     animation: 200,
     ghostClass: 'opacity-30',
     onUpdate: () => {
-        const reordered = props.modelValue.map((step, i) => ({
+        const reordered = localSteps.value.map((step, i) => ({
             ...step,
             order: i + 1,
         }));

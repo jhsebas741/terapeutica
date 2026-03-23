@@ -4,10 +4,13 @@ use App\Models\Game;
 use App\Models\GameElement;
 use App\Models\Pictogram;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 use function Pest\Laravel\actingAs;
 
 beforeEach(function () {
+    Role::firstOrCreate(['name' => 'admin']);
+    Role::firstOrCreate(['name' => 'paciente']);
     $this->admin = User::factory()->create();
     $this->admin->assignRole('admin');
 });
@@ -57,7 +60,7 @@ it('can view create game page', function () {
 });
 
 it('can store game of type emparejar', function () {
-    $pictograms = Pictogram::factory()->count(2)->create();
+    $pictograms = Pictogram::factory()->count(4)->create();
 
     actingAs($this->admin)->post('/admin/games', [
         'name' => 'Juego de Pares',
@@ -66,6 +69,8 @@ it('can store game of type emparejar', function () {
         'elements' => [
             ['pictogram_id' => $pictograms[0]->id],
             ['pictogram_id' => $pictograms[1]->id],
+            ['pictogram_id' => $pictograms[2]->id],
+            ['pictogram_id' => $pictograms[3]->id],
         ],
     ])->assertRedirect('/admin/games');
 
@@ -77,7 +82,6 @@ it('can store game of type emparejar', function () {
     $this->assertDatabaseHas('game_elements', [
         'pictogram_id' => $pictograms[0]->id,
         'sequence_order' => null,
-        'situation_text' => null,
     ]);
 });
 
@@ -120,22 +124,47 @@ it('validates sequence_order when type is secuencia', function () {
 });
 
 it('can store game of type emocion with required text', function () {
-    $pictograms = Pictogram::factory()->count(2)->create();
+    $pictograms = Pictogram::factory()->count(4)->create();
 
     actingAs($this->admin)->post('/admin/games', [
         'name' => 'Juego de Emociones',
+        'description' => 'Escucha un ruido fuerte',
         'type' => 'emocion',
         'level' => 3,
         'elements' => [
-            ['pictogram_id' => $pictograms[0]->id, 'situation_text' => 'Me quitan mi juguete'],
-            ['pictogram_id' => $pictograms[1]->id, 'situation_text' => 'Me dan un helado'],
+            ['pictogram_id' => $pictograms[0]->id, 'sequence_order' => 1],
+            ['pictogram_id' => $pictograms[1]->id, 'sequence_order' => 2],
+            ['pictogram_id' => $pictograms[2]->id, 'sequence_order' => 3],
+            ['pictogram_id' => $pictograms[3]->id, 'sequence_order' => 4],
         ],
     ])->assertRedirect('/admin/games');
 
+    $this->assertDatabaseHas('games', [
+        'name' => 'Juego de Emociones',
+        'description' => 'Escucha un ruido fuerte',
+        'type' => 'emocion',
+    ]);
+
     $this->assertDatabaseHas('game_elements', [
         'pictogram_id' => $pictograms[0]->id,
-        'situation_text' => 'Me quitan mi juguete',
+        'sequence_order' => 1,
     ]);
+});
+
+it('validates description is required when type is emocion', function () {
+    $pictogram = Pictogram::factory()->create();
+
+    actingAs($this->admin)->post('/admin/games', [
+        'name' => 'Bad Emocion',
+        'type' => 'emocion',
+        'level' => 2,
+        'elements' => [
+            ['pictogram_id' => $pictogram->id, 'sequence_order' => 1],
+            ['pictogram_id' => $pictogram->id, 'sequence_order' => 2],
+            ['pictogram_id' => $pictogram->id, 'sequence_order' => 3],
+            ['pictogram_id' => $pictogram->id, 'sequence_order' => 4],
+        ],
+    ])->assertSessionHasErrors(['description']);
 });
 
 it('validates situation_text when type is emocion', function () {
@@ -146,10 +175,12 @@ it('validates situation_text when type is emocion', function () {
         'type' => 'emocion',
         'level' => 2,
         'elements' => [
-            ['pictogram_id' => $pictogram->id], // Missing situation_text
+            ['pictogram_id' => $pictogram->id], // Missing sequence_order
+            ['pictogram_id' => $pictogram->id],
+            ['pictogram_id' => $pictogram->id],
             ['pictogram_id' => $pictogram->id],
         ],
-    ])->assertSessionHasErrors(['elements.0.situation_text']);
+    ])->assertSessionHasErrors(['elements.0.sequence_order']);
 });
 
 it('can view edit game page', function () {
@@ -175,7 +206,9 @@ it('can update game and sync elements', function () {
         'level' => 5,
         'elements' => [
             ['pictogram_id' => $newPictogram->id],
-            ['pictogram_id' => $newPictogram->id, 'ignored_field' => 'should be clean'],
+            ['pictogram_id' => $newPictogram->id],
+            ['pictogram_id' => $newPictogram->id],
+            ['pictogram_id' => $newPictogram->id],
         ],
     ])->assertRedirect('/admin/games');
 
