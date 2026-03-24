@@ -22,10 +22,10 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { index as categoriesIndex } from '@/routes/admin/categories';
+import { index as gamesIndex } from '@/routes/admin/games';
 import { index as patientsIndex } from '@/routes/admin/patients';
 import { index as pictogramsIndex } from '@/routes/admin/pictograms';
 import { index as routinesIndex } from '@/routes/admin/routines';
-import { index as gamesIndex } from '@/routes/admin/games';
 import type { NavItem } from '@/types';
 import AppLogo from './AppLogo.vue';
 

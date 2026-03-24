@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PatientRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -42,7 +41,6 @@ class PatientController extends Controller
     public function store(PatientRequest $request)
     {
         $data = $request->validated();
-        $data['password'] = Hash::make($data['password']);
 
         $patient = User::create($data);
         $patient->assignRole('paciente');
@@ -60,6 +58,7 @@ class PatientController extends Controller
     public function edit(User $patient)
     {
         $patient->load('patientSetting');
+
         return Inertia::render('admin/patients/Edit', [
             'patient' => $patient,
         ]);
@@ -68,10 +67,8 @@ class PatientController extends Controller
     public function update(PatientRequest $request, User $patient)
     {
         $data = $request->validated();
-        
-        if (!empty($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
-        } else {
+
+        if (empty($data['password'])) {
             unset($data['password']);
         }
 
@@ -87,7 +84,7 @@ class PatientController extends Controller
 
     public function toggleActive(User $patient)
     {
-        $patient->update(['is_active' => !$patient->is_active]);
+        $patient->update(['is_active' => ! $patient->is_active]);
 
         Inertia::flash('toast', [
             'type' => 'success',

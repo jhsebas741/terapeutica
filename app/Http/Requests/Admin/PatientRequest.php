@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
-
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
@@ -22,6 +21,13 @@ class PatientRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'email' => strtolower((string) $this->input('email')),
+        ]);
+    }
+
     public function rules(): array
     {
         $userId = $this->route('patient') ? $this->route('patient')->id : null;
@@ -33,7 +39,7 @@ class PatientRequest extends FormRequest
             'birth_date' => ['required', 'date'],
             'diagnosis' => ['nullable', 'string', 'max:255'],
             'avatar_url' => ['nullable', 'string', 'max:255'],
-            //'avatar' => ['nullable', 'file', 'max:2048', 'mimes:jpg,jpeg,png,webp'],
+            // 'avatar' => ['nullable', 'file', 'max:2048', 'mimes:jpg,jpeg,png,webp'],
         ];
     }
 

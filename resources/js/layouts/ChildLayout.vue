@@ -3,8 +3,8 @@ import { Link, router, usePage } from '@inertiajs/vue3';
 import { HomeIcon, LogOutIcon } from 'lucide-vue-next';
 import { onUnmounted } from 'vue';
 import { toast } from 'vue-sonner';
-import { Toaster } from '@/components/ui/sonner';
 import CalmButton from '@/components/CalmButton.vue';
+import { Toaster } from '@/components/ui/sonner';
 
 const page = usePage();
 
